@@ -43,16 +43,17 @@
     apiStatus: $("apiStatus"),
   };
 
-  const defaults = {
-    systemEff: 85,
-    capKw: 20,
-    days: 30,
-    selfRatioPct: 30,
-    tariff: 180,
-    smp: 110,
-    rec: 70,
-    pshFallback: 3.6,
-  };
+const defaults = {
+  systemEff: 100,
+  capKw: 20,
+  days: 30,
+  selfRatioPct: 0,
+  tariff: 200,
+  smp: 120,
+  rec: 70,
+  pshFallback: 3.6,
+};
+
 
   function round(n, d=2){ const p = 10**d; return Math.round(n*p)/p; }
   function won(n){ return `${Math.round(n).toLocaleString("ko-KR")} 원`; }
@@ -217,6 +218,7 @@
 
   window.addEventListener("DOMContentLoaded", wire);
 })();
+
 
 
 
