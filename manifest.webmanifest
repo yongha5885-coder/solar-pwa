@@ -1,0 +1,15 @@
+{
+  "name": "해랑에너지 | 태양광 수익 예측",
+  "short_name": "해랑에너지",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#0b3a6e",
+  "icons": [
+    {
+      "src": "./logo.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    }
+  ]
+}
