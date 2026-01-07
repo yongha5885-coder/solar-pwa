@@ -1,4 +1,4 @@
-const CACHE = "harang-solar-pwa-v3";
+const CACHE = "harang-solar-pwa-v20260107"; // ✅ 버전 올림(중요)
 const ASSETS = [
   "./",
   "./index.html",
@@ -21,12 +21,11 @@ self.addEventListener("activate", (e) => {
   })());
 });
 
-// 네트워크 우선(최신 코드 우선), 실패 시 캐시
+// 네트워크 우선(최신), 실패 시 캐시
 self.addEventListener("fetch", (e) => {
   e.respondWith((async () => {
     try {
-      const res = await fetch(e.request);
-      return res;
+      return await fetch(e.request);
     } catch {
       const cached = await caches.match(e.request);
       return cached || caches.match("./index.html");
