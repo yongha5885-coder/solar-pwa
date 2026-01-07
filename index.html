@@ -2,109 +2,149 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#0b3a75" />
   <title>해랑에너지 | 태양광 수익 예측</title>
-
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./logo.png" />
-  <link rel="apple-touch-icon" href="./logo.png" />
   <link rel="stylesheet" href="./style.css" />
 </head>
-
 <body>
   <header class="topbar">
     <div class="brand">
-      <img class="logo" src="./logo.png" alt="해랑에너지 로고" />
+      <img class="logo" src="./logo.png" alt="해랑에너지 로고">
       <div>
-        <h1>해랑에너지</h1>
-        <p class="sub">태양광 발전·수익 예측 대시보드</p>
-        <p class="hint">기본값: 월 평균 일사량 <b>3.6시간</b> · 시스템 효율 <b>0.90</b></p>
+        <div class="brandTitle">해랑에너지</div>
+        <div class="brandSub">지역·월 기반 일사량(PSH) + 실측 검증</div>
       </div>
     </div>
   </header>
 
   <main class="wrap">
     <section class="card">
-      <h2>입력</h2>
+      <h2 class="h2">기본값(기상 데이터 기반)</h2>
 
-      <div class="grid">
-        <label>
-          <span>설비용량 (kW)</span>
-          <input id="capKw" type="number" step="0.1" value="20" />
-        </label>
+      <div class="grid2">
+        <div class="field">
+          <label>지역</label>
+          <select id="region"></select>
+        </div>
 
-        <label>
-          <span>월 평균 일사량 (시간/일)</span>
-          <input id="psh" type="number" step="0.1" value="3.6" />
-        </label>
+        <div class="field">
+          <label>기준 월</label>
+          <select id="month"></select>
+        </div>
 
-        <label>
-          <span>시스템 효율 (0~1)</span>
-          <input id="eff" type="number" step="0.01" value="0.90" />
-        </label>
+        <div class="field">
+          <label>기본 일사량(PSH, 시간/일)</label>
+          <input id="psh" type="number" step="0.1" min="0">
+          <div class="hint">지역·월 선택 시 자동 입력됩니다(필요 시 수정 가능).</div>
+        </div>
 
-        <label>
-          <span>자가소비 비율 (0~1)</span>
-          <input id="selfRatio" type="number" step="0.01" value="0.30" />
-        </label>
-
-        <label>
-          <span>전기요금 단가 (원/kWh)</span>
-          <input id="tariff" type="number" step="1" value="180" />
-        </label>
-
-        <label>
-          <span>SMP 단가 (원/kWh)</span>
-          <input id="smp" type="number" step="1" value="110" />
-        </label>
-
-        <label>
-          <span>REC 환산 (원/kWh)</span>
-          <input id="rec" type="number" step="1" value="70" />
-        </label>
-
-        <label>
-          <span>월 일수</span>
-          <input id="days" type="number" step="1" value="30" />
-        </label>
-      </div>
-
-      <div class="actions">
-        <button id="calcBtn" class="primary">계산하기</button>
-        <button id="resetBtn" class="ghost">기본값으로</button>
-      </div>
-
-      <div class="note small">
-        ※ 본 계산은 평균 일사량 기반 추정치입니다. 실제 발전량은 음영, 온도, 오염, 출력제어, 선로제약 등 현장 변수에 따라 달라질 수 있습니다.
+        <div class="field">
+          <label>시스템 효율(%)</label>
+          <input id="systemEff" type="number" step="1" min="1" max="100" value="85">
+        </div>
       </div>
     </section>
 
     <section class="card">
-      <h2>결과</h2>
+      <h2 class="h2">계산 입력</h2>
 
-      <div class="result">
+      <div class="grid2">
+        <div class="field">
+          <label>설비용량(kW)</label>
+          <input id="capKw" type="number" step="0.1" value="20">
+        </div>
+
+        <div class="field">
+          <label>월 일수</label>
+          <input id="days" type="number" step="1" value="30">
+        </div>
+
+        <div class="field">
+          <label>자가소비 비율(%)</label>
+          <input id="selfRatio" type="number" step="1" value="30">
+        </div>
+
+        <div class="field">
+          <label>전기요금 단가(원/kWh)</label>
+          <input id="tariff" type="number" step="1" value="180">
+        </div>
+
+        <div class="field">
+          <label>SMP 단가(원/kWh)</label>
+          <input id="smp" type="number" step="1" value="110">
+        </div>
+
+        <div class="field">
+          <label>REC 환산(원/kWh)</label>
+          <input id="rec" type="number" step="1" value="70">
+        </div>
+      </div>
+
+      <div class="btnRow">
+        <button id="calcBtn">계산하기</button>
+        <button id="resetBtn" class="ghost">기본값으로</button>
+      </div>
+      <div class="tiny muted" id="basisNote"></div>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">결과</h2>
+      <div class="resultBox" id="resultBox">
         <div class="row"><span>일 예상 발전량</span><b id="outDayKwh">-</b></div>
         <div class="row"><span>월 예상 발전량</span><b id="outMonKwh">-</b></div>
-        <hr />
+        <hr>
         <div class="row"><span>월 절감액(자가소비)</span><b id="outSave">-</b></div>
         <div class="row"><span>월 SMP 수익(잉여판매)</span><b id="outSmp">-</b></div>
         <div class="row"><span>월 REC 수익(추정)</span><b id="outRec">-</b></div>
-        <hr />
+        <hr>
         <div class="row total"><span>월 총 수익(추정)</span><b id="outTotal">-</b></div>
       </div>
     </section>
+
+    <section class="card">
+      <h2 class="h2">검증(실측 대비 오차율)</h2>
+      <div class="grid2">
+        <div class="field">
+          <label>실제 월 발전량(kWh) 입력(인버터/모니터링)</label>
+          <input id="actualMonKwh" type="number" step="1" placeholder="예: 2700">
+          <div class="hint">입력하면 예측 대비 오차율이 자동 계산됩니다.</div>
+        </div>
+
+        <div class="field">
+          <label>오차율(%)</label>
+          <input id="errPct" type="text" readonly value="-">
+          <div class="hint">오차율 = (예측-실제)/실제 × 100</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="h2">날씨(API) 연동</h2>
+      <p class="muted tiny">
+        GitHub Pages에서는 API 키를 숨길 수 없어, 보통 Cloudflare Worker/Apps Script로 중계합니다.
+        (아래는 연결 구조 안내입니다)
+      </p>
+      <div class="grid2">
+        <div class="field">
+          <label>관측소/지점코드(선택)</label>
+          <input id="stn" type="text" placeholder="예: 133 (지점번호)">
+        </div>
+        <div class="field">
+          <label>조회 기간(YYYYMMDD~YYYYMMDD)</label>
+          <input id="dateRange" type="text" placeholder="예: 20260101-20260131">
+        </div>
+      </div>
+      <div class="btnRow">
+        <button id="fetchObsBtn" class="ghost">관측데이터 불러오기(연동 준비)</button>
+      </div>
+      <div class="tiny muted" id="apiStatus">연동 전(프록시 URL 설정 필요)</div>
+    </section>
   </main>
 
-  <footer class="footer">© 해랑에너지</footer>
-
   <script src="./app.js" defer></script>
-  <script>
-    // PWA(Service Worker) 등록
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
-    }
-  </script>
 </body>
 </html>
 
