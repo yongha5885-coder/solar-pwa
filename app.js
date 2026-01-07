@@ -55,6 +55,7 @@ const defaults = {
 };
 
 
+
   function round(n, d=2){ const p = 10**d; return Math.round(n*p)/p; }
   function won(n){ return `${Math.round(n).toLocaleString("ko-KR")} 원`; }
   function kwh(n){ return `${round(n,1)} kWh`; }
@@ -218,6 +219,7 @@ const defaults = {
 
   window.addEventListener("DOMContentLoaded", wire);
 })();
+
 
 
 
